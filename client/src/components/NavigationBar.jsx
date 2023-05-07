@@ -17,8 +17,8 @@ const NavigationBar = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div>
-      <Navbar color="light" light expand="md">
+    <div className="sticky-top">
+      <Navbar color="light" light expand="md" >
         <NavbarBrand href="/" style={{ fontSize: '1.7rem', textAlign: 'center', fontWeight: 'bold' }}>Veterinaria Pelusa's Cat</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

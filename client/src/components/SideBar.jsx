@@ -6,7 +6,7 @@ import { SiDatadog } from "react-icons/si";
 
 const SideBar = () => {
   return (
-    <div className="sidebar bg-light">
+    <div className="sidebar bg-light sticky-top">
       <ul>
         <li style={{ display: "flex", justifyContent: "center" }}>
           <SiDatadog className="" style={{ fontSize: "100px" }} />

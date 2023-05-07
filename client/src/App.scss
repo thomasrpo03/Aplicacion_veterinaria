@@ -3,11 +3,9 @@
 *{
   margin: 0;
   padding: 0;
-}
-
-body {
   font-family: 'Rubik', sans-serif;
 }
+
 
 $light: #b8b7b7c8;
 $gray: #e7e9eb;
@@ -25,7 +23,7 @@ $gray: #e7e9eb;
 
 .sidebar {
   width: 18rem;
-  height: calc(100vh - 52px);
+  height: 100vh;
   border-right: 1px solid $gray;
   ul {
     list-style: none;
@@ -44,3 +42,6 @@ $gray: #e7e9eb;
   }
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
