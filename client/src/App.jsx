@@ -6,6 +6,8 @@ import Inicio from "../src/pages/Inicio";
 import Clientes from "../src/pages/Clientes";
 import Citas from "../src/pages/Citas";
 import Facturacion from "../src/pages/Facturacion";
+import AddClientes from "./pages/AddClientes";
+import AddMascotas from "./pages/AddMascotas";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
             <Route exact path="/clientes" element={<Clientes />} />
             <Route exact path="/citas" element={<Citas />} />
             <Route exact path="/facturacion" element={<Facturacion />} />
+            <Route exact path="/addclientes" element={<AddClientes />} />
+            <Route exact path="/addmascotas" element={<AddMascotas />} />
           </Routes>
         </div>
       </div>
