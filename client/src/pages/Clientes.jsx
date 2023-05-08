@@ -11,7 +11,6 @@ const Clientes = () => {
       setClientes(response.data);
     });
   }, []);
-  console.log(clientes);
 
   return (
     <div className="m-4">
@@ -21,15 +20,15 @@ const Clientes = () => {
       <Table striped bordered>
         <thead>
           <tr>
-            <th>No.1</th>
-            <th>Tipo de Identificación</th>
-            <th>No. Documento</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Barrio</th>
-            <th>Dirección</th>
-            <th>Correo Electróniico</th>
-            <th>Teléfono</th>
+            <th className="text-center">No.</th>
+            <th className="text-center">Tipo de Identificación</th>
+            <th className="text-center">No. Documento</th>
+            <th className="text-center">Nombres</th>
+            <th className="text-center">Apellidos</th>
+            <th className="text-center">Barrio</th>
+            <th className="text-center">Dirección</th>
+            <th className="text-center">Correo Electróniico</th>
+            <th className="text-center">Teléfono</th>
           </tr>
         </thead>
         <tbody>
