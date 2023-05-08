@@ -203,14 +203,6 @@ const Clientes = () => {
             Guardar
           </Button>
         </div>
-        <div className="d-flex justify-content-center pt-5">
-          <p class="h3 fw-bold">Siguiente paso</p>
-        </div>
-        <div className="d-flex justify-content-center">
-          <NavLink to="/addmascotas">
-            <Button className="btn-lg">Crear Mascota</Button>
-          </NavLink>
-        </div>
       </Form>
     </div>
   );
