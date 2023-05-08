@@ -22,9 +22,11 @@ const AddMascotas = () => {
       })
       .then(() => {
         alert("Mascota agregada correctamente");
+      })
+      .catch(() => {
+        alert("Error al agregar mascota");
       });
   };
-
   return (
     <div className="content m-3">
       <div className="d-flex justify-content-center">
@@ -79,7 +81,7 @@ const AddMascotas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="date"
               name="FECHA_NACIMIENTO"
               id="FECHA_NACIMIENTO"
               onChange={(event) => {
@@ -105,8 +107,9 @@ const AddMascotas = () => {
                 setSexo(event.target.value);
               }}
             >
-              <option value={"MACHO"}>Macho</option>
-              <option value={"HEMBRA"}>Hembra</option>
+              <option value="NOSELECCIONADO">Seleccione una opción</option>
+              <option value="MACHO">Macho</option>
+              <option value="HEMBRA">Hembra</option>
             </Input>
           </Col>
         </FormGroup>

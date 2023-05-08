@@ -62,3 +62,6 @@ DELIMITER ;
 
 
 CALL SP_AGREGAR_MASCOTAS('PruebaMascota','5 KG','2018-01-01','MACHO',2);
+
+
+

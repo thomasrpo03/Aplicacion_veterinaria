@@ -2,7 +2,6 @@ import React from "react";
 import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
 const Clientes = () => {
   const [idIdentificacion, setIdIdentificacion] = useState(0);
@@ -28,6 +27,9 @@ const Clientes = () => {
       })
       .then(() => {
         alert("Cliente agregado correctamente");
+      })
+      .catch(() => {
+        alert("Error al agregar cliente");
       });
   };
 
@@ -54,7 +56,7 @@ const Clientes = () => {
                 setIdIdentificacion(event.target.value);
               }}
             >
-              <option value="">Seleccione una opción</option>
+              <option value="0">Seleccione una opción</option>
               <option value="1">Cédula de Ciudadanía</option>
               <option value="2">Cédula de Extranjería</option>
               <option value="3">Número de Identificación Personal</option>
@@ -170,6 +172,7 @@ const Clientes = () => {
           </Label>
           <Col sm={10}>
             <Input
+              placeholder="ejemplo@mail.com"
               type="email"
               name="EMAIL"
               id="EMAIL"
