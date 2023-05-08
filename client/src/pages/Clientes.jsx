@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect,  useState } from "react";
 import { Table, Button } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const Clientes = () => {
-  const [clientes, setClientes] = React.useState([]);
+  const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:3001/listduenos").then((response) => {

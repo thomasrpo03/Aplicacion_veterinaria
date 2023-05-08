@@ -19,7 +19,7 @@ const Inicio = () => {
   return (
     <div className="m-4">
       <div className="d-flex justify-content-center">
-        <p class="h1 fw-bold pb-2">Nuestra Mascotas</p>
+        <p class="h1 fw-bold pb-2">Nuestras Mascotas</p>
       </div>
       <Table striped bordered>
         <thead>
