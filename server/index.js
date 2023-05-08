@@ -14,7 +14,22 @@ const db = mysql.createConnection({
   password: "contraseña",
 });
 
+//Metodos citas
+
 //Metodos dueños
+app.get("/listduenos", (req, res) => {
+  db.query(
+    "SELECT DUENOS.ID_DUENOS, TIPO_IDENTIFICACION.DESCRIPCION AS TIPO_IDENTIFICACION, DUENOS.NUMERO_IDENTIFICACION, DUENOS.NOMBRES, DUENOS.APELLIDOS, DUENOS.BARRIO, DUENOS.DIRECCION, DUENOS.EMAIL, DUENOS.TELEFONO FROM duenos INNER JOIN TIPO_IDENTIFICACION ON DUENOS.ID_TIPO_IDENTIFICACION = TIPO_IDENTIFICACION.ID_TIPO_IDENTIFICACION ORDER BY DUENOS.ID_DUENOS",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.post("/createduenos", (req, res) => {
   const idIdentificacion = req.body.idIdentificacion;
   const documento = req.body.documento;
@@ -42,21 +57,11 @@ app.post("/createduenos", (req, res) => {
         console.log(err);
         res.status(500).send("Error al crear el cliente");
       } else {
-        console.log("Registro exitoso mi papá");
+        console.log("Registro de cliente exitoso mi papá");
         res.status(200).send("Cliente creado exitosamente");
       }
     }
   );
-});
-
-app.get("/listduenos", (req, res) => {
-  db.query("SELECT DUENOS.ID_DUENOS, TIPO_IDENTIFICACION.DESCRIPCION AS TIPO_IDENTIFICACION, DUENOS.NUMERO_IDENTIFICACION, DUENOS.NOMBRES, DUENOS.APELLIDOS, DUENOS.BARRIO, DUENOS.DIRECCION, DUENOS.EMAIL, DUENOS.TELEFONO FROM duenos INNER JOIN TIPO_IDENTIFICACION ON DUENOS.ID_TIPO_IDENTIFICACION = TIPO_IDENTIFICACION.ID_TIPO_IDENTIFICACION ORDER BY DUENOS.ID_DUENOS", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
 });
 
 //Metodos Mascotas
@@ -75,13 +80,27 @@ app.post("/createmascotas", (req, res) => {
         console.log(err);
         res.status(500).send("Error al crear el mascota");
       } else {
-        console.log("Registro exitoso mi papácho");
+        console.log("Registro de mascota exitoso mi papácho");
         res.status(200).send("Mascota creada exitosamente");
       }
     }
   );
 });
 
+app.get("/listmascotas", (req, res) => {
+  db.query(
+    "SELECT m.ID_MASCOTAS, m.NOMBRE, m.PESO, m.FECHA_NACIMIENTO, m.SEXO, r.DESCRIPCION AS RAZA FROM MASCOTAS m JOIN RAZA r ON m.ID_RAZA = r.ID_RAZA",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//Listener del puerto
 app.listen(3001, () => {
   console.log("Server en el puerto 3001");
 });
