@@ -48,7 +48,7 @@ const Clientes = () => {
         </tbody>
       </Table>
       <NavLink to="/addclientes">
-        <Button className="btn btn-primary">Añadir Cliente </Button>
+        <Button className="btn-lg btn-primary">Añadir Cliente </Button>
       </NavLink>
     </div>
   );

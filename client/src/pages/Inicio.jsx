@@ -48,7 +48,7 @@ const Inicio = () => {
         </tbody>
       </Table>
       <NavLink to="/addmascotas">
-        <Button className="btn btn-primary">Añadir Mascota </Button>
+        <Button className="btn-lg btn-primary">Añadir Mascota </Button>
       </NavLink>
     </div>
   )

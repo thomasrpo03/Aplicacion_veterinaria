@@ -56,7 +56,7 @@ const Citas = () => {
         </tbody>
       </Table>
       <NavLink to="/addcitas">
-        <Button className="btn btn-primary">Nueva Cita</Button>
+        <Button className="btn-lg btn-primary">Nueva Cita</Button>
       </NavLink>
     </div>
   );
