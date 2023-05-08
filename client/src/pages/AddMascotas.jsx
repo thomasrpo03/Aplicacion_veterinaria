@@ -98,13 +98,16 @@ const AddMascotas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="sexo"
               id="sexo"
               onChange={(event) => {
                 setSexo(event.target.value);
               }}
-            ></Input>
+            >
+              <option value={"MACHO"}>Macho</option>
+              <option value={"HEMBRA"}>Hembra</option>
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>
