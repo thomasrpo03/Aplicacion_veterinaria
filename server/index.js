@@ -28,6 +28,44 @@ app.get("/listcitas", (req, res) => {
   );
 });
 
+app.post("/addcitas", (req, res) => {
+  const nombre = req.body.nombre;
+  const descripcion = req.body.descripcion;
+  const idDiagPpal = req.body.idDiagPpal;
+  const idDiagSec = req.body.idDiagSec;
+  const fecha = req.body.fecha;
+  const horaInicio = req.body.horaInicio;
+  const horaFin = req.body.horaFin;
+  const nombreConsulta = req.body.nombreConsulta;
+  const tratamiento = req.body.tratamiento;
+  const observaciones = req.body.observaciones;
+
+  db.query(
+    //falta añadir el Procedimiento almacenado
+    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      nombre,
+      descripcion,
+      idDiagPpal,
+      idDiagSec,
+      fecha,
+      horaInicio,
+      horaFin,
+      nombreConsulta,
+      tratamiento,
+      observaciones,
+    ],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error al registrar la cita");
+      } else {
+        console.log("Registro de cita exitoso");
+        res.status(200).send("Cita registrada con éxito");
+      }
+    }
+  );
+});
 
 //Metodos dueños
 app.get("/listduenos", (req, res) => {

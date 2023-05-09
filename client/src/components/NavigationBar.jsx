@@ -27,7 +27,7 @@ const NavigationBar = (props) => {
               <DropdownToggle nav caret style={{ fontSize: '1.3rem'}}>
                 Thomas Restrepo
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu end>
                 <DropdownItem>
                   Opciones
                 </DropdownItem>

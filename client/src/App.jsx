@@ -8,6 +8,7 @@ import Citas from "../src/pages/Citas";
 import Facturacion from "../src/pages/Facturacion";
 import AddClientes from "./pages/AddClientes";
 import AddMascotas from "./pages/AddMascotas";
+import AddCitas from "./pages/AddCitas";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/facturacion" element={<Facturacion />} />
             <Route exact path="/addclientes" element={<AddClientes />} />
             <Route exact path="/addmascotas" element={<AddMascotas />} />
+            <Route exact path="/addcitas" element={<AddCitas />} />
           </Routes>
         </div>
       </div>

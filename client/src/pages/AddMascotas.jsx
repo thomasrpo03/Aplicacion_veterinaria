@@ -30,7 +30,7 @@ const AddMascotas = () => {
   return (
     <div className="content m-3">
       <div className="d-flex justify-content-center">
-        <p class="h1 fw-bold">Añadir una nueva mascota</p>
+        <p className="h1 fw-bold">Añadir una nueva mascota</p>
       </div>
       <Form className="m-4">
         <FormGroup row>
