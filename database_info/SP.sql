@@ -20,32 +20,55 @@ DELIMITER ;
 CALL SP_CITAS_AGENDADAS_COMPLETO();
 
 DELIMITER //
-CREATE PROCEDURE `SP_AGREGAR_CITAS` (
-IN `MASCOTA` VARCHAR(100),
-IN `DIAGNOSTICO_P` VARCHAR(100),
-IN `DIAGNOSTICO_S` VARCHAR(100),
-IN `FECHA` DATE,
-IN `HORA_INICIO` TIME,
-IN `HORA_FIN` TIME,
-IN `CONSULTA` VARCHAR(100),
-IN `T_TRATAMIENTO` VARCHAR(100),
-IN `OBSERVACIONES` VARCHAR(500)
-
+CREATE PROCEDURE SP_AGREGAR_CITAS(
+    IN nombre_mascota VARCHAR(100),
+    IN id_cod_diagnostico_principal INT,
+    IN id_cod_diagnostico_secundario INT,
+    IN fecha DATE,
+    IN hora_inicio TIME,
+    IN hora_fin TIME,
+    IN id_tipo_consulta INT,
+    IN id_tratamiento INT,
+    IN observaciones VARCHAR(500)
 )
-COMMENT 'Procedimiento almacenado para agregar citas.'
 BEGIN
-INSERT INTO citas (FECHA,HORA_INICIO,HORA_FIN,OBSERVACIONES,ID_TIPO_CONSULTA,ID_MASCOTAS,ID_TRATAMIENTO,
-ID_COD_DIAGNOSTICO_PRINCIPAL,ID_COD_DIAGNOSTICO_SECUNDARIO) 
-VALUES (FECHA,HORA_INICIO,HORA_FIN,OBSERVACIONES,
-(SELECT ID_TIPO_CONSULTA FROM tipo_consulta WHERE NOMBRE_CONSULTA = CONSULTA),
-(SELECT ID_MASCOTAS FROM mascotas WHERE NOMBRE = MASCOTA),
-(SELECT ID_TRATAMIENTO FROM tratamiento WHERE DESCRIPCION = T_TRATAMIENTO),
-(SELECT ID_COD_DIAGNOSTICO FROM cod_diagnostico WHERE CODIGO = DIAGNOSTICO_P),
-(SELECT ID_COD_DIAGNOSTICO FROM cod_diagnostico WHERE CODIGO = DIAGNOSTICO_S));
+    DECLARE id_mascota INT;
+    
+    -- Obtener el id de la mascota con el nombre especificado
+    SELECT ID_MASCOTAS INTO id_mascota
+    FROM MASCOTAS
+    WHERE NOMBRE = nombre_mascota;
+    
+    -- Insertar la nueva cita en la tabla CITAS
+    INSERT INTO CITAS (
+        FECHA,
+        HORA_INICIO,
+        HORA_FIN,
+        OBSERVACIONES,
+        ID_TIPO_CONSULTA,
+        ID_MASCOTAS,
+        ID_TRATAMIENTO,
+        ID_COD_DIAGNOSTICO_PRINCIPAL,
+        ID_COD_DIAGNOSTICO_SECUNDARIO
+    ) VALUES (
+        fecha,
+        hora_inicio,
+        hora_fin,
+        observaciones,
+        id_tipo_consulta,
+        id_mascota,
+        id_tratamiento,
+        id_cod_diagnostico_principal,
+        id_cod_diagnostico_secundario
+    );
+    
+    -- Confirmar la inserción
+    SELECT 'La cita ha sido agregada correctamente.' AS mensaje;
+    
 END//
 DELIMITER ;
 
-CALL SP_AGREGAR_CITAS('JIRAFA','0','U00-U99','2023-05-30','12:00:00','13:00:00','CELO','CHEQUEO','TODO PRUEBA');
+CALL SP_AGREGAR_CITAS('LUCY', 1, 2, '2023-05-10', '10:00:00', '11:00:00', 1, 1, 'Observaciones de la cita');
 
 ##################TABLA CLIENTES#######################
 
@@ -89,7 +112,6 @@ END//
 DELIMITER ;
 
 
-CALL SP_AGREGAR_MASCOTAS('PruebaMascota','5 KG','2018-01-01','MACHO',2);
-
+CALL SP_AGREGAR_MASCOTAS('PruebaMascota','5 KG','2018-01-01','MACHO',26);
 
 
