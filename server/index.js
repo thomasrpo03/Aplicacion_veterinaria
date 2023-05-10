@@ -40,7 +40,6 @@ app.post("/addcitas", (req, res) => {
   const observaciones = req.body.observaciones;
 
   db.query(
-    //falta añadir el Procedimiento almacenado
     "CALL SP_AGREGAR_CITAS(?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       nombre,
@@ -60,6 +59,55 @@ app.post("/addcitas", (req, res) => {
       } else {
         console.log("Registro de cita exitoso");
         res.status(200).send("Cita registrada con éxito");
+      }
+    }
+  );
+});
+
+app.get("/opcionesmascotas", (req, res) => {
+  db.query("SELECT NOMBRE FROM mascotas;", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/opcionescodigo", (req, res) => {
+  db.query(
+    "SELECT ID_COD_DIAGNOSTICO, DESCRIPCION FROM cod_diagnostico;",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/opcionesconsulta", (req, res) => {
+  db.query(
+    "SELECT ID_TIPO_CONSULTA, NOMBRE_CONSULTA FROM tipo_consulta;",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/opcionestratamiento", (req, res) => {
+  db.query(
+    "SELECT ID_TRATAMIENTO, DESCRIPCION FROM tratamiento;",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
       }
     }
   );
@@ -113,6 +161,16 @@ app.post("/createduenos", (req, res) => {
   );
 });
 
+app.get("/opcionesidentificacion", (req, res) => {
+  db.query("SELECT DESCRIPCION FROM tipo_identificacion;", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 //Metodos Mascotas
 app.post("/createmascotas", (req, res) => {
   const nombre = req.body.nombre;
@@ -147,6 +205,26 @@ app.get("/listmascotas", (req, res) => {
       }
     }
   );
+});
+
+app.get("/opcionessexo", (req, res) => {
+  db.query("", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.get("/opcionesraza", (req, res) => {
+  db.query("SELECT ID_RAZA, DESCRIPCION FROM raza;", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 //Listener del puerto

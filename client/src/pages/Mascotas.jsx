@@ -3,7 +3,7 @@ import { Table, Button } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
-const Inicio = () => {
+const Mascotas = () => {
   const [mascotas, setMascotas] = React.useState([]);
 
   useEffect(() => {
@@ -54,4 +54,4 @@ const Inicio = () => {
   )
 };
 
-export default Inicio;
+export default Mascotas;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
 import { useState } from "react";
 import axios from "axios";
@@ -14,6 +14,35 @@ const AddCitas = () => {
   const [tratamiento, setTratamiento] = useState("");
   const [observaciones, setObservaciones] = useState("");
 
+  const [mascotas, setMascotas] = useState([]);
+  const [codigo, setCodigo] = useState([]);
+  const [tipoConsulta, setTipoConsulta] = useState([]);
+  const [opcionesTratamiento, setOpcionesTratamiento] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/opcionesmascotas").then((response) => {
+      setMascotas(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/opcionescodigo").then((response) => {
+      setCodigo(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/opcionesconsulta").then((response) => {
+      setTipoConsulta(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/opcionestratamiento").then((response) => {
+      setOpcionesTratamiento(response.data);
+    });
+  }, []);
+
   const addCita = () => {
     axios
       .post("http://localhost:3001/addcitas", {
@@ -28,10 +57,10 @@ const AddCitas = () => {
         observaciones: observaciones,
       })
       .then(() => {
-        alert("Cliente agregado correctamente");
+        alert("Cita registrada correctamente");
       })
       .catch(() => {
-        alert("Error al agregar cliente");
+        alert("Error al registrar cita");
       });
   };
 
@@ -39,6 +68,16 @@ const AddCitas = () => {
     <div className="content m-3">
       <div className="d-flex justify-content-center">
         <p className="h1 fw-bold">Registrar Cita</p>
+      </div>
+      <div className="d-flex justify-content-center">
+        <p>Recuerde que para registrar una cita primero debe</p>
+        <a href="/addmascotas" target="_blank" className="ms-1">
+          registrar una mascota
+        </a>
+        <p className="ms-1">y</p>
+        <a href="/addclientes" target="_blank" className="ms-1">
+          registrar un cliente
+        </a>
       </div>
       <Form className="m-4">
         <FormGroup row>
@@ -51,13 +90,22 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="NOMBRE"
               id="NOMBRE"
               onChange={(event) => {
                 setNombre(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {mascotas.map((d) => (
+                <option key={d.NOMBRE} value={d.NOMBRE}>
+                  {d.NOMBRE}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -70,13 +118,22 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="ID_DIAGNOSTICO_PRINCIPAL"
               id="ID_DIAGNOSTICO_PRINCIPAL"
               onChange={(event) => {
                 setIdDiagPpal(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {codigo.map((d) => (
+                <option key={d.ID_COD_DIAGNOSTICO} value={d.ID_COD_DIAGNOSTICO}>
+                  {d.DESCRIPCION}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -89,13 +146,22 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="ID_DIAGNOSTICO_SECUNDARIO"
               id="ID_DIAGNOSTICO_SECUNDARIO"
               onChange={(event) => {
                 setIdDiagSec(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {codigo.map((d) => (
+                <option key={d.ID_COD_DIAGNOSTICO} value={d.ID_COD_DIAGNOSTICO}>
+                  {d.DESCRIPCION}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -165,13 +231,22 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="NOMBRE_CONSULTA"
               id="NOMBRE_CONSULTA"
               onChange={(event) => {
                 setNombreConsulta(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {tipoConsulta.map((d) => (
+                <option key={d.ID_TIPO_CONSULTA} value={d.ID_TIPO_CONSULTA}>
+                  {d.NOMBRE_CONSULTA}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -184,13 +259,22 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="TRATAMIENTO"
               id="TRATAMIENTO"
               onChange={(event) => {
                 setTratamiento(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {opcionesTratamiento.map((d) => (
+                <option key={d.ID_TRATAMIENTO} value={d.ID_TRATAMIENTO}>
+                  {d.DESCRIPCION}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <FormGroup row>

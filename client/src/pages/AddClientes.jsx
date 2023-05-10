@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Clientes = () => {
@@ -12,6 +12,16 @@ const Clientes = () => {
   const [direccion, setDireccion] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
+
+  const [opcionesId, setOpcionesId] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/opcionesidentificacion")
+      .then((response) => {
+        setOpcionesId(response.data);
+      });
+  }, []);
 
   const addCliente = () => {
     axios
@@ -56,13 +66,12 @@ const Clientes = () => {
                 setIdIdentificacion(event.target.value);
               }}
             >
-              <option value="0">Seleccione una opción</option>
-              <option value="1">Cédula de Ciudadanía</option>
-              <option value="2">Cédula de Extranjería</option>
-              <option value="3">Número de Identificación Personal</option>
-              <option value="4">Número de Identificación Tributaria</option>
-              <option value="5">Tarjeta de Identidad</option>
-              <option value="6">Pasaporte</option>
+              <option value="SELECCIONE UNA OPCION">Seleccione una opción</option>
+              {opcionesId.map((d) => (
+                <option key={d.DESCRIPCION} value={d.DESCRIPCION}>
+                  {d.DESCRIPCION}
+                </option>
+              ))}
             </Input>
           </Col>
         </FormGroup>

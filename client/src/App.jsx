@@ -2,7 +2,7 @@ import "./App.scss";
 import NavigationBar from "./components/NavigationBar";
 import SideBar from "./components/SideBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Inicio from "../src/pages/Inicio";
+import Mascotas from "../src/pages/Mascotas";
 import Clientes from "../src/pages/Clientes";
 import Citas from "../src/pages/Citas";
 import Facturacion from "../src/pages/Facturacion";
@@ -18,7 +18,7 @@ function App() {
         <div className="content w-100">
           <NavigationBar />
           <Routes>
-            <Route exact path="/" element={<Inicio />} />
+            <Route exact path="/" element={<Mascotas />} />
             <Route exact path="/clientes" element={<Clientes />} />
             <Route exact path="/citas" element={<Citas />} />
             <Route exact path="/facturacion" element={<Facturacion />} />

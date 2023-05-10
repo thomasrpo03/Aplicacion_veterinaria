@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
-import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
 const AddMascotas = () => {
   const [nombre, setNombre] = useState("");
@@ -10,6 +8,14 @@ const AddMascotas = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [sexo, setSexo] = useState("");
   const [idRaza, setIdRaza] = useState("");
+
+  const [opcionesRaza, setOpcionesRaza] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/opcionesraza").then((response) => {
+      setOpcionesRaza(response.data);
+    });
+  }, []);
 
   const addMascota = () => {
     axios
@@ -123,13 +129,22 @@ const AddMascotas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="input"
+              type="select"
               name="ID_RAZA"
               id="ID_RAZA"
               onChange={(event) => {
                 setIdRaza(event.target.value);
               }}
-            ></Input>
+            >
+              <option value="SELECCIONE UNA OPCION">
+                Seleccione una opción
+              </option>
+              {opcionesRaza.map((d) => (
+                <option key={d.ID_RAZA} value={d.ID_RAZA}>
+                  {d.DESCRIPCION}
+                </option>
+              ))}
+            </Input>
           </Col>
         </FormGroup>
         <div className="d-flex justify-content-center">

@@ -1,8 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaRegCalendarAlt, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaRegCalendarAlt, FaFileInvoiceDollar } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
 import { SiDatadog } from "react-icons/si";
+import { BsFillPersonFill } from "react-icons/bs";
 
 const SideBar = () => {
   return (
@@ -13,12 +14,12 @@ const SideBar = () => {
         </li>
         <li>
           <NavLink to="/" exact className="text-dark rounded py-2 w-100 d-inline-block px-3" activeClassName="active">
-            <FaHome/> Inicio
+            <MdPets/> Mascotas
           </NavLink>
         </li>
         <li>
           <NavLink to="/clientes" exact className="text-dark rounded py-2 w-100 d-inline-block px-3" activeClassName="active">
-            <MdPets /> Clientes
+            <BsFillPersonFill /> Clientes
           </NavLink>
         </li>
         <li>
