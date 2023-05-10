@@ -5,7 +5,6 @@ import axios from "axios";
 
 const AddCitas = () => {
   const [nombre, setNombre] = useState("");
-  const [descipcion, setDescripcion] = useState("");
   const [idDiagPpal, setIdDiagPpal] = useState("");
   const [idDiagSec, setIdDiagSec] = useState("");
   const [fecha, setFecha] = useState("");
@@ -19,7 +18,6 @@ const AddCitas = () => {
     axios
       .post("http://localhost:3001/addcitas", {
         nombre: nombre,
-        descipcion: descipcion,
         idDiagPpal: idDiagPpal,
         idDiagSec: idDiagSec,
         fecha: fecha,
@@ -53,31 +51,11 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="select"
+              type="input"
               name="NOMBRE"
               id="NOMBRE"
               onChange={(event) => {
                 setNombre(event.target.value);
-              }}
-            ></Input>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label
-            for="DESCRIPCION"
-            sm={2}
-            style={{ fontSize: "1.3rem", textAlign: "center" }}
-          >
-            Especie
-          </Label>
-          <Col sm={10}>
-            <Input
-              placeholder="Sin puntos ni espacios"
-              type="select"
-              name="DESCRIPCION"
-              id="DESCRIPCION"
-              onChange={(event) => {
-                setDescripcion(event.target.value);
               }}
             ></Input>
           </Col>
@@ -92,7 +70,7 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="select"
+              type="input"
               name="ID_DIAGNOSTICO_PRINCIPAL"
               id="ID_DIAGNOSTICO_PRINCIPAL"
               onChange={(event) => {
@@ -111,7 +89,7 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="select"
+              type="input"
               name="ID_DIAGNOSTICO_SECUNDARIO"
               id="ID_DIAGNOSTICO_SECUNDARIO"
               onChange={(event) => {
@@ -187,7 +165,7 @@ const AddCitas = () => {
           </Label>
           <Col sm={10}>
             <Input
-              type="select"
+              type="input"
               name="NOMBRE_CONSULTA"
               id="NOMBRE_CONSULTA"
               onChange={(event) => {

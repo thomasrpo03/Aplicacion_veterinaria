@@ -30,7 +30,6 @@ app.get("/listcitas", (req, res) => {
 
 app.post("/addcitas", (req, res) => {
   const nombre = req.body.nombre;
-  const descripcion = req.body.descripcion;
   const idDiagPpal = req.body.idDiagPpal;
   const idDiagSec = req.body.idDiagSec;
   const fecha = req.body.fecha;
@@ -42,10 +41,9 @@ app.post("/addcitas", (req, res) => {
 
   db.query(
     //falta añadir el Procedimiento almacenado
-    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "CALL SP_AGREGAR_CITAS(?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       nombre,
-      descripcion,
       idDiagPpal,
       idDiagSec,
       fecha,
