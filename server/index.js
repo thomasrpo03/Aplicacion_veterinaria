@@ -161,6 +161,42 @@ app.post("/createduenos", (req, res) => {
   );
 });
 
+app.put("/updateduenos", (req, res) => {
+  const documento = req.body.documento;
+  const nombres = req.body.nombres;
+  const apellidos = req.body.apellidos;
+  const barrio = req.body.barrio;
+  const direccion = req.body.direccion;
+  const email = req.body.email;
+  const telefono = req.body.telefono;
+  const idDocumento = req.body.idDocumento;
+  const idDueno = req.body.idDueno;
+
+  db.query(
+    "UPDATE duenos SET NUMERO_IDENTIFICACION = ?, NOMBRES = ?, APELLIDOS = ?, BARRIO = ?, DIRECCION = ?, EMAIL = ?, TELEFONO = ?, ID_TIPO_IDENTIFICACION = ? WHERE ID_DUENOS = ?",
+    [
+      documento,
+      nombres,
+      apellidos,
+      barrio,
+      direccion,
+      email,
+      telefono,
+      idDocumento,
+      idDueno,
+    ],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error al actualizar el cliente");
+      } else {
+        console.log("Actualización de cliente exitoso mi papá");
+        res.status(200).send("Cliente actualizado exitosamente");
+      }
+    }
+  );
+});
+
 app.get("/opcionesidentificacion", (req, res) => {
   db.query("SELECT DESCRIPCION FROM tipo_identificacion;", (err, result) => {
     if (err) {
