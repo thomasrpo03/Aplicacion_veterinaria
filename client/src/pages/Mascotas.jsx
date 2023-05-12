@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Modal, Form, Button, Table } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -10,11 +10,25 @@ const formatDate = (date) => {
   return new Date(date).toLocaleDateString();
 };
 
-function Mascotas() {
-  const [showModal, setShowModal] = useState(false);
+const Mascotas = () => {
+  const [nombre, setNombre] = useState("");
+  const [peso, setPeso] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [idRaza, setIdRaza] = useState("");
+  const [id, setId] = useState(0);
 
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const [pets, setPets] = useState([]);
+
+  const getPets = () => {
+    axios.get(url).then((response) => {
+      setPets(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getPets();
+  }, []);
 
   const [opcionesRaza, setOpcionesRaza] = useState([]);
 
@@ -24,37 +38,19 @@ function Mascotas() {
     });
   }, []);
 
-  const [pets, setPets] = useState([]);
-
-  const refreshPets = () => {
-    axios.get(url).then((response) => {
-      setPets(response.data);
-    });
-  };
-
-  useEffect(() => {
-    refreshPets();
-  }, []);
-
-  const [nombre, setNombre] = useState("");
-  const [peso, setPeso] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [sexo, setSexo] = useState("");
-  const [raza, setRaza] = useState("");
-
   const addMascota = () => {
     axios
       .post(url, {
         NOMBRE: nombre,
         PESO: peso,
-        FECHA_NACIMIENTO: fecha,
+        FECHA_NACIMIENTO: fechaNacimiento,
         SEXO: sexo,
-        ID_RAZA: raza,
+        ID_RAZA: idRaza,
       })
       .then(() => {
         alert("Mascota agregada correctamente");
-        refreshPets();
-        handleClose();
+        getPets();
+        cleanInputs();
       })
       .catch(() => {
         alert("Error al agregar mascota");
@@ -67,7 +63,7 @@ function Mascotas() {
         .delete(`${url}/${id}`)
         .then(() => {
           alert("Mascota eliminada correctamente");
-          refreshPets();
+          getPets();
         })
         .catch(() => {
           alert("Error al eliminar mascota");
@@ -75,124 +71,252 @@ function Mascotas() {
     }
   };
 
-  return (
-    <>
-      <div className="container-fluid m-1">
-        <p className="text-center h2 fw-bold mt-3">Nuestras mascotas</p>
-        <Table striped bordered className="mt-3">
-          <thead>
-            <tr className="text-center">
-              <th>No.</th>
-              <th>NOMBRE</th>
-              <th>PESO</th>
-              <th>FECHA DE NACIMIENTO</th>
-              <th>SEXO</th>
-              <th>RAZA</th>
-              <th>ACCIÓN</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pets.map((d, i) => (
-              <tr key={i} className="text-center">
-                <td>{d.ID_MASCOTAS}</td>
-                <td>{d.NOMBRE}</td>
-                <td>{d.PESO}</td>
-                <td>{formatDate(d.FECHA_NACIMIENTO)}</td>
-                <td>{d.SEXO}</td>
-                <td>{d.RAZA}</td>
-                <td>
-                  <Button className="btn-dark">
-                    <FaEdit />
-                  </Button>
-                  <Button
-                    className="btn-danger ms-2"
-                    onClick={() => deleteMascotas(d.ID_MASCOTAS)}
-                  >
-                    <FaTrash />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Button className="btn-lg btn-dark" onClick={handleShow}>
-          Añadir Mascota
-        </Button>
+  const updateMascota = () => {
+    axios
+      .put(`${url}/${id}`, {
+        ID_MASCOTAS: id,
+        NOMBRE: nombre,
+        PESO: peso,
+        FECHA_NACIMIENTO: fechaNacimiento,
+        SEXO: sexo,
+        ID_RAZA: idRaza,
+      })
+      .then(() => {
+        alert("Mascota actualizada correctamente");
+        getPets();
+        cleanInputs();
+      })
+      .catch(() => {
+        alert("Error al actualizar mascota");
+      });
+  };
 
-        <Modal show={showModal} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Añadir una nueva mascota</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group>
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control
-                  type="text"
+  const [editar, setEditar] = useState(false);
+
+  const editMascota = (val) => {
+    setEditar(true);
+
+    setNombre(val.NOMBRE);
+    setPeso(val.PESO);
+    setFechaNacimiento(val.FECHA_NACIMIENTO);
+    setSexo(val.SEXO);
+    setIdRaza(val.ID_RAZA);
+    setId(val.ID_MASCOTAS);
+  };
+
+  const cleanInputs = () => {
+    setNombre("");
+    setPeso("");
+    setFechaNacimiento("");
+    setSexo("");
+    setIdRaza("");
+    setId("");
+
+    setEditar(false);
+  };
+
+  return (
+    <div className="content m-3">
+      <div className="card text-center">
+        <div className="card-header h2 fw-bold">Añadir Mascota</div>
+        <div className="card-body">
+          <Form className="m-4">
+            <FormGroup row>
+              <Label
+                for="NOMBRE"
+                sm={2}
+                style={{ fontSize: "1.3rem", textAlign: "center" }}
+              >
+                Nombre
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="input"
+                  name="NOMBRE"
+                  id="NOMBRE"
                   onChange={(event) => {
                     setNombre(event.target.value);
                   }}
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Peso (Kg)</Form.Label>
-                <Form.Control
-                  type="text"
+                  value={nombre}
+                  required
+                ></Input>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label
+                for="PESO"
+                sm={2}
+                style={{ fontSize: "1.3rem", textAlign: "center" }}
+              >
+                Peso (Kg)
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="input"
+                  name="PESO"
+                  id="PESO"
                   onChange={(event) => {
                     setPeso(event.target.value);
                   }}
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control
+                  value={peso}
+                  required
+                ></Input>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label
+                for="FECHA_NACIMIENTO"
+                sm={2}
+                style={{ fontSize: "1.3rem", textAlign: "center" }}
+              >
+                Fecha de Nacimiento
+              </Label>
+              <Col sm={10}>
+                <Input
                   type="date"
+                  name="FECHA_NACIMIENTO"
+                  id="FECHA_NACIMIENTO"
                   onChange={(event) => {
-                    setFecha(event.target.value);
+                    setFechaNacimiento(event.target.value);
                   }}
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label className="mt-3">Sexo</Form.Label>
-                <Form.Select
+                  value={fechaNacimiento}
+                  required
+                ></Input>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label
+                for="sexo"
+                sm={2}
+                style={{ fontSize: "1.3rem", textAlign: "center" }}
+              >
+                Sexo
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="select"
+                  name="sexo"
+                  id="sexo"
                   onChange={(event) => {
                     setSexo(event.target.value);
                   }}
+                  value={sexo}
+                  required
                 >
                   <option>Seleccione una opción</option>
                   <option value="MACHO">Macho</option>
                   <option value="HEMBRA">Hembra</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label className="mt-3">Raza</Form.Label>
-                <Form.Select
+                </Input>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label
+                for="ID_RAZA"
+                sm={2}
+                style={{ fontSize: "1.3rem", textAlign: "center" }}
+              >
+                Raza
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="select"
+                  name="ID_RAZA"
+                  id="ID_RAZA"
                   onChange={(event) => {
-                    setRaza(event.target.value);
+                    setIdRaza(event.target.value);
                   }}
+                  value={idRaza}
+                  required
                 >
                   <option>Seleccione una opción</option>
-                  {opcionesRaza.map((d) => (
-                    <option key={d.ID_RAZA} value={d.ID_RAZA}>
-                      {d.DESCRIPCION}
+                  {opcionesRaza.map((val) => (
+                    <option key={val.ID_RAZA} value={val.ID_RAZA}>
+                      {val.DESCRIPCION}
                     </option>
                   ))}
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Volver
-            </Button>
-            <Button variant="primary" onClick={addMascota}>
-              Guardar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                </Input>
+              </Col>
+            </FormGroup>
+          </Form>
+        </div>
+        <div className="card-footer text-muted">
+          <div className="d-flex justify-content-center">
+            {editar ? (
+              <div>
+                <Button className="btn-lg btn-dark" onClick={updateMascota}>
+                  Actualizar
+                </Button>
+                <Button
+                  className="btn-lg btn-danger ms-3"
+                  onClick={cleanInputs}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            ) : (
+              <Button className="btn-lg btn-dark" onClick={addMascota}>
+                Guardar
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
-    </>
+      <div className="card mt-3 text-center">
+        <div className="card-header h2 fw-bold">Listado de Mascotas</div>
+        <div className="card-body">
+          <Table striped bordered className="mt-3">
+            <thead>
+              <tr className="text-center">
+                <th>No.</th>
+                <th>NOMBRE</th>
+                <th>PESO</th>
+                <th>FECHA DE NACIMIENTO</th>
+                <th>SEXO</th>
+                <th>RAZA</th>
+                <th>ACCIÓN</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pets.map((val, i) => (
+                <tr key={i} className="text-center">
+                  <td>{val.ID_MASCOTAS}</td>
+                  <td>{val.NOMBRE}</td>
+                  <td>{val.PESO}</td>
+                  <td>{formatDate(val.FECHA_NACIMIENTO)}</td>
+                  <td>{val.SEXO}</td>
+                  <td>{val.RAZA}</td>
+                  <td>
+                    <Button
+                      className="btn-dark"
+                      onClick={() => {
+                        editMascota(val);
+                      }}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      className="btn-danger ms-2"
+                      onClick={() => deleteMascotas(val.ID_MASCOTAS)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <div className="card-footer text-muted">
+          <Button
+            className="btn-lg btn-dark"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <i className="fas fa-chevron-up"></i> Volver arriba
+          </Button>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Mascotas;
