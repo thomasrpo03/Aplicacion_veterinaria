@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const url = "http://localhost:3001/api/pets";
+const raceOptionsUrl = "http://localhost:3001/api/raceoptions";
 
 const AddMascotas = () => {
   const [nombre, setNombre] = useState("");
@@ -11,20 +15,26 @@ const AddMascotas = () => {
 
   const [opcionesRaza, setOpcionesRaza] = useState([]);
 
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/");
+  }
+
   useEffect(() => {
-    axios.get("http://localhost:3001/opcionesraza").then((response) => {
+    axios.get(raceOptionsUrl).then((response) => {
       setOpcionesRaza(response.data);
     });
   }, []);
 
   const addMascota = () => {
     axios
-      .post("http://localhost:3001/createmascotas", {
-        nombre: nombre,
-        peso: peso,
-        fechaNacimiento: fechaNacimiento,
-        sexo: sexo,
-        idRaza: idRaza,
+      .post(url, {
+        NOMBRE: nombre,
+        PESO: peso,
+        FECHA_NACIMIENTO: fechaNacimiento,
+        SEXO: sexo,
+        ID_RAZA: idRaza,
       })
       .then(() => {
         alert("Mascota agregada correctamente");
@@ -148,9 +158,10 @@ const AddMascotas = () => {
           </Col>
         </FormGroup>
         <div className="d-flex justify-content-center">
-          <Button className="btn-lg" onClick={addMascota}>
+          <Button className="btn-lg btn-dark" onClick={addMascota}>
             Guardar
           </Button>
+          <button className="btn btn-lg btn-secondary ms-3" onClick={handleClick}>Volver</button>
         </div>
       </Form>
     </div>

@@ -1,58 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, FormGroup, Label, Col, Input, Button } from "reactstrap";
 
-const url = "http://localhost:3001/listmascotas";
+const url = "http://localhost:3001/api/pets";
+const raceOptionsUrl = "http://localhost:3001/api/raceoptions";
 
 const EditMascotas = () => {
-  const [nombre, setNombre] = useState("");
-  const [peso, setPeso] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [sexo, setSexo] = useState("");
-  const [idRaza, setIdRaza] = useState("");
-  const { id } = useParams();
-  const redirect = useNavigate();
-
-  useEffect(() => {
-    const getMascota = async () => {
-      const params = {
-        headers: { "Content-Type": "application/json" },
-        params: { id: id },
-      };
-      const response = await axios.get(url, params);
-      setNombre(response.data[0].nombre);
-      setPeso(response.data[0].peso);
-      setFechaNacimiento(response.data[0].fechaNacimiento);
-      setSexo(response.data[0].sexo);
-      setIdRaza(response.data[0].idRaza);
-    };
-    getMascota();
-  }, [id]);
-
-  const update = async (e) => {
-    e.preventDefault();
-    await axios.put(`${url}/${id}`, {
-      nombre: nombre,
-      peso: peso,
-      fechaNacimiento: fechaNacimiento,
-      sexo: sexo,
-      idRaza: idRaza,
-    });
-    redirect("/");
-  };
-
+  const params = useParams();
+  console.log(params);
   const [opcionesRaza, setOpcionesRaza] = useState([]);
 
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/");
+  }
+
   useEffect(() => {
-    axios.get("http://localhost:3001/opcionesraza").then((response) => {
+    axios.get(raceOptionsUrl).then((response) => {
       setOpcionesRaza(response.data);
     });
   }, []);
+
   return (
     <div className="content m-3">
       <div className="d-flex justify-content-center">
-        <p className="h1 fw-bold">Editar mascota</p>
+        <p className="h1 fw-bold">Añadir una nueva mascota</p>
       </div>
       <Form className="m-4">
         <FormGroup row>
@@ -164,9 +138,13 @@ const EditMascotas = () => {
           </Col>
         </FormGroup>
         <div className="d-flex justify-content-center">
-          <Button className="btn-lg" onClick={update}>
-            Guardar
-          </Button>
+          <Button className="btn-lg btn-dark">Guardar</Button>
+          <button
+            className="btn btn-lg btn-secondary ms-3"
+            onClick={handleClick}
+          >
+            Volver
+          </button>
         </div>
       </Form>
     </div>

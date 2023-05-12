@@ -1,4 +1,6 @@
 import "./App.scss";
+import "bootstrap/scss/bootstrap.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 import NavigationBar from "./components/NavigationBar";
 import SideBar from "./components/SideBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";

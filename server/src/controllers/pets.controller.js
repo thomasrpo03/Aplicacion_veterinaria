@@ -2,7 +2,9 @@ import { pool } from "../db.js";
 
 export const getPets = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM MASCOTAS");
+    const [rows] = await pool.query(
+      "SELECT M.ID_MASCOTAS, M.NOMBRE, M.PESO, M.FECHA_NACIMIENTO, M.SEXO, R.DESCRIPCION AS RAZA FROM MASCOTAS M INNER JOIN RAZA R ON M.ID_RAZA = R.ID_RAZA ORDER BY ID_MASCOTAS;"
+    );
     res.json(rows);
   } catch (error) {
     return res.status(500).json({ message: "Algo salió mal" });
@@ -79,6 +81,17 @@ export const updatePet = async (req, res) => {
     );
 
     res.json(rows[0]);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
+
+//**********  OPCIONES SELECT   **********//
+
+export const getRaceOptions = async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT ID_RAZA, DESCRIPCION FROM raza;");
+    res.json(rows);
   } catch (error) {
     return res.status(500).json({ message: "Algo salió mal" });
   }
