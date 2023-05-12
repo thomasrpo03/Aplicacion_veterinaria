@@ -3,157 +3,118 @@ import { Modal, Form, Button, Table } from "react-bootstrap";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-function Clientes() {
+function Citas() {
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  // const openModal = (
-  //   op,
-  //   id,
-  //   tipoIdenficacion,
-  //   documento,
-  //   nombres,
-  //   apellidos,
-  //   barrio,
-  //   direccion,
-  //   email,
-  //   telefono
-  // ) => {
-  //   setId("");
-  //   setTipoIdenficacion("");
-  //   setDocumento("");
-  //   setNombres("");
-  //   setApellidos("");
-  //   setBarrio("");
-  //   setDireccion("");
-  //   setEmail("");
-  //   setTelefono("");
-  //   setOperation("");
-  //   if (op === 1) {
-  //     setTitle("Nuevo Cliente");
-  //   } else if (op === 2) {
-  //     setTitle("Editar Cliente");
-  //     setId(id);
-  //     setTipoIdenficacion(tipoIdenficacion);
-  //     setDocumento(documento);
-  //     setNombres(nombres);
-  //     setApellidos(apellidos);
-  //     setBarrio(barrio);
-  //     setDireccion(direccion);
-  //     setEmail(email);
-  //     setTelefono(telefono);
-  //   }
-  //   window.setTimeout(function () {
-  //     document.getElementById("documento").focus();
-  //   }, 500);
-  // };
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString();
+  };
 
-  const url = "http://localhost:3001/api/clients";
-  const [clientes, setClientes] = useState([]);
-  const [id, setId] = useState("");
-  const [tipoIdentificacion, setTipoIdenficacion] = useState("");
-  const [documento, setDocumento] = useState("");
-  const [nombres, setNombres] = useState("");
-  const [apellidos, setApellidos] = useState("");
-  const [barrio, setBarrio] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [operation, setOperation] = useState("");
-  const [title, setTitle] = useState("");
+  const url = "http://localhost:3001/api/appointments";
+  const [citas, setCitas] = useState([]);
+  const [mascota, setMascota] = useState("");
+  const [codPpal, setCodPpal] = useState("");
+  const [codSec, setCodSec] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
+  const [tipoConsulta, setTipoConsulta] = useState("");
+  const [tratamiento, setTratamiento] = useState("");
+  const [observaciones, setObservaciones] = useState("");
 
-  const getClients = async () => {
+  const getCitas = async () => {
     const response = await axios.get(url);
-    setClientes(response.data);
+    setCitas(response.data);
   };
 
   useEffect(() => {
-    getClients();
+    getCitas();
   }, []);
 
-  const urlTipoDocumento = "http://localhost:3001/api/tipodocumento";
-  const [tipoDocumento, setTipoDocumento] = useState("");
-
-  useEffect(() => {
-    axios.get(urlTipoDocumento).then((response) => {
-      setTipoDocumento(response.data);
-    });
-  }, []);
-
-  const addClient = () => {
+  const addAppointment = () => {
     axios
       .post(url, {
-        ID_TIPO_IDENTIFICACION: tipoIdentificacion,
-        NUMERO_IDENTIFICACION: documento,
-        NOMBRES: nombres,
-        APELLIDOS: apellidos,
-        BARRIO: barrio,
-        DIRECCION: direccion,
-        EMAIL: email,
-        TELEFONO: telefono,
+        FECHA: fecha,
+        HORA_INICIO: horaInicio,
+        HORA_FIN: horaFin,
+        OBSERVACIONES: observaciones,
+        ID_TIPO_CONSULTA: tipoConsulta,
+        ID_MASCOTAS: mascota,
+        ID_TRATAMIENTO: tratamiento,
+        ID_COD_DIAGNOSTICO_PRINCIPAL: codPpal,
+        ID_COD_DIAGNOSTICO_SECUNDARIO: codSec,
       })
       .then(() => {
-        alert("Cliente agregado correctamente");
-        getClients();
+        alert("Cita registrada correctamente");
+        getCitas();
         handleClose();
       })
       .catch(() => {
-        alert("Error al agregar cliente");
+        alert("Error al registar cita");
       });
   };
 
-  const deleteClient = (id) => {
-    if (window.confirm("¿Está seguro de eliminar este cliente?")) {
+  //Opciones formulario
+
+  const deleteCita = (id) => {
+    if (window.confirm("¿Está seguro de eliminar esta cita?")) {
       axios
         .delete(`${url}/${id}`)
         .then(() => {
-          alert("Cliente eliminado correctamente");
-          getClients();
+          alert("Cita eliminada correctamente");
+          getCitas();
         })
         .catch(() => {
-          alert("Error al eliminar cliente");
+          alert("Error al eliminar cita");
         });
     }
   };
 
   return (
     <>
-      <div className="container-fluid m-1">
-        <p className="text-center h2 fw-bold mt-3">Nuestras mascotas</p>
+      <div className="container-fluid m-0">
+        <p className="text-center h2 fw-bold mt-3">Citas</p>
         <Table striped bordered className="mt-3">
           <thead>
             <tr className="text-center">
               <th>No.</th>
-              <th>No. DOCUMENTO</th>
-              <th>NOMBRES</th>
-              <th>APELLIDOS</th>
-              <th>BARRIO</th>
-              <th>DIRECCION</th>
-              <th>EMAIL</th>
-              <th>TELÉFONO</th>
-              <th>ACCIÓN</th>
+              <th>MASCOTA</th>
+              <th>ESPECIE</th>
+              <th className="w-20">DIAGNÓSTICO PRINCIPAL</th>
+              <th className="w-20">DIAGNÓSTICO SECUNDARIO</th>
+              <th>FECHA</th>
+              <th>HORA INICIO</th>
+              <th>HORA FIN</th>
+              <th className="w-15">TIPO CONSULTA</th>
+              <th>TRATAMIENTO</th>
+              <th>OBSERVACIONES</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>
-            {clientes.map((d, i) => (
+            {citas.map((d, i) => (
               <tr key={i} className="text-center">
-                <td>{d.ID_DUENOS}</td>
-                <td>{d.NUMERO_IDENTIFICACION}</td>
-                <td>{d.NOMBRES}</td>
-                <td>{d.APELLIDOS}</td>
-                <td>{d.BARRIO}</td>
-                <td>{d.DIRECCION}</td>
-                <td>{d.EMAIL}</td>
-                <td>{d.TELEFONO}</td>
+                <td>{d.ID_CITAS}</td>
+                <td>{d.MASCOTA}</td>
+                <td>{d.ESPECIE}</td>
+                <td>{d.CODIGO_DIAG_PRINCIPAL}</td>
+                <td>{d.CODIGO_DIAG_SECUNDARIO}</td>
+                <td>{formatDate(d.FECHA)}</td>
+                <td>{d.HORA_INICIO}</td>
+                <td>{d.HORA_FIN}</td>
+                <td>{d.NOMBRE_CONSULTA}</td>
+                <td>{d.TRATAMIENTO}</td>
+                <td>{d.OBSERVACIONES}</td>
                 <td>
-                  <Button className="btn-dark">
+                  <Button className="btn-sm btn-dark">
                     <FaEdit />
                   </Button>
                   <Button
-                    className="btn-danger ms-2"
-                    onClick={() => deleteClient(d.ID_DUENOS)}
+                    className="btn-sm btn-danger ms-2"
+                    onClick={() => deleteCita(d.ID_CITAS)}
                   >
                     <FaTrash />
                   </Button>
@@ -163,90 +124,74 @@ function Clientes() {
           </tbody>
         </Table>
         <Button className="btn-lg btn-dark" onClick={handleShow}>
-          Añadir Cliente
+          Registrar cita
         </Button>
       </div>
 
       <div>
         <Modal show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>{title}</Modal.Title>
+            <Modal.Title>Registrar cita</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
+              <Form.Group className="mt-3">
+                <Form.Label>Fecha de la cita</Form.Label>
+                <Form.Control type="date"></Form.Control>
+              </Form.Group>
+
+              <Form.Group className="mt-3">
+                <Form.Label>Hora de inicio</Form.Label>
+                <Form.Control type="time"></Form.Control>
+              </Form.Group>
+
+              <Form.Group className="mt-3">
+                <Form.Label>Hora de fin</Form.Label>
+                <Form.Control type="time"></Form.Control>
+              </Form.Group>
+
               <Form.Group>
-                <Form.Label className="mt-3">Tipo de documento</Form.Label>
-                <Form.Select
-                  value={tipoIdentificacion}
-                  onChange={(e) => setTipoIdenficacion(e.target.value)}
-                >
+                <Form.Label className="mt-3">Observaciones</Form.Label>
+                <Form.Select>
                   <option>Seleccione una opción</option>
-                  {Array.isArray(tipoDocumento) &&
-                    tipoDocumento.map((d) => (
-                      <option
-                        key={d.ID_TIPO_IDENTIFICACION}
-                        value={d.ID_TIPO_IDENTIFICACION}
-                      >
-                        {d.DESCRIPCION}
-                      </option>
-                    ))}
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>No. Documento</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={documento}
-                  onChange={(e) => setDocumento(e.target.value)}
-                ></Form.Control>
+
+              <Form.Group>
+                <Form.Label className="mt-3">Tipo de consulta</Form.Label>
+                <Form.Select>
+                  <option>Seleccione una opción</option>
+                </Form.Select>
               </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Nombres</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={nombres}
-                  onChange={(e) => setNombres(e.target.value)}
-                ></Form.Control>
+
+              <Form.Group>
+                <Form.Label className="mt-3">
+                  A que mascota se le realizó la consulta?
+                </Form.Label>
+                <Form.Select>
+                  <option>Seleccione una opción</option>
+                </Form.Select>
               </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Apellidos</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={apellidos}
-                  onChange={(e) => setApellidos(e.target.value)}
-                ></Form.Control>
+
+              <Form.Group>
+                <Form.Label className="mt-3">Tratamiento</Form.Label>
+                <Form.Select>
+                  <option>Seleccione una opción</option>
+                </Form.Select>
               </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Barrio</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={barrio}
-                  onChange={(e) => setBarrio(e.target.value)}
-                ></Form.Control>
+
+              <Form.Group>
+                <Form.Label className="mt-3">Diagnóstico Principal</Form.Label>
+                <Form.Select>
+                  <option>Seleccione una opción</option>
+                </Form.Select>
               </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Direccion</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={direccion}
-                  onChange={(e) => setDireccion(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Correo electrónico</Form.Label>
-                <Form.Control
-                  type="mail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-              <Form.Group className="mt-3">
-                <Form.Label>Telefono</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={telefono}
-                  onChange={(e) => setTelefono(e.target.value)}
-                ></Form.Control>
+
+              <Form.Group>
+                <Form.Label className="mt-3">Diagnóstico Secundario</Form.Label>
+                <Form.Select>
+                  <option>Seleccione una opción</option>
+                </Form.Select>
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -254,7 +199,7 @@ function Clientes() {
             <Button variant="secondary" onClick={handleClose}>
               Volver
             </Button>
-            <Button variant="primary" onClick={addClient}>
+            <Button variant="primary" onClick={addAppointment}>
               Guardar
             </Button>
           </Modal.Footer>
@@ -264,4 +209,4 @@ function Clientes() {
   );
 }
 
-export default Clientes;
+export default Citas;
