@@ -9,7 +9,6 @@ import Clientes from "../src/pages/Clientes";
 import Citas from "../src/pages/Citas";
 import Facturacion from "../src/pages/Facturacion";
 import AddClientes from "./pages/AddClientes";
-import AddMascotas from "./pages/AddMascotas";
 import AddCitas from "./pages/AddCitas";
 import EditMascotas from "./pages/EditMascotas";
 
@@ -26,7 +25,6 @@ function App() {
             <Route exact path="/citas" element={<Citas />} />
             <Route exact path="/facturacion" element={<Facturacion />} />
             <Route exact path="/addclientes" element={<AddClientes />} />
-            <Route exact path="/addmascotas" element={<AddMascotas />} />
             <Route exact path="/addcitas" element={<AddCitas />} />
             <Route exact path="/editmascotas/:id" element={<EditMascotas />} />
           </Routes>
