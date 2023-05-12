@@ -1,65 +1,267 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Modal, Form, Button, Table } from "react-bootstrap";
 import axios from "axios";
-import { Table, Button } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
-const Citas = () => {
-  const [citas, setCitas] = useState([]);
+function Clientes() {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
+
+  // const openModal = (
+  //   op,
+  //   id,
+  //   tipoIdenficacion,
+  //   documento,
+  //   nombres,
+  //   apellidos,
+  //   barrio,
+  //   direccion,
+  //   email,
+  //   telefono
+  // ) => {
+  //   setId("");
+  //   setTipoIdenficacion("");
+  //   setDocumento("");
+  //   setNombres("");
+  //   setApellidos("");
+  //   setBarrio("");
+  //   setDireccion("");
+  //   setEmail("");
+  //   setTelefono("");
+  //   setOperation("");
+  //   if (op === 1) {
+  //     setTitle("Nuevo Cliente");
+  //   } else if (op === 2) {
+  //     setTitle("Editar Cliente");
+  //     setId(id);
+  //     setTipoIdenficacion(tipoIdenficacion);
+  //     setDocumento(documento);
+  //     setNombres(nombres);
+  //     setApellidos(apellidos);
+  //     setBarrio(barrio);
+  //     setDireccion(direccion);
+  //     setEmail(email);
+  //     setTelefono(telefono);
+  //   }
+  //   window.setTimeout(function () {
+  //     document.getElementById("documento").focus();
+  //   }, 500);
+  // };
+
+  const url = "http://localhost:3001/api/clients";
+  const [clientes, setClientes] = useState([]);
+  const [id, setId] = useState("");
+  const [tipoIdentificacion, setTipoIdenficacion] = useState("");
+  const [documento, setDocumento] = useState("");
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [barrio, setBarrio] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [operation, setOperation] = useState("");
+  const [title, setTitle] = useState("");
+
+  const getClients = async () => {
+    const response = await axios.get(url);
+    setClientes(response.data);
+  };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/listcitas").then((response) => {
-      setCitas(response.data);
+    getClients();
+  }, []);
+
+  const urlTipoDocumento = "http://localhost:3001/api/tipodocumento";
+  const [tipoDocumento, setTipoDocumento] = useState("");
+
+  useEffect(() => {
+    axios.get(urlTipoDocumento).then((response) => {
+      setTipoDocumento(response.data);
     });
   }, []);
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString();
+  const addClient = () => {
+    axios
+      .post(url, {
+        ID_TIPO_IDENTIFICACION: tipoIdentificacion,
+        NUMERO_IDENTIFICACION: documento,
+        NOMBRES: nombres,
+        APELLIDOS: apellidos,
+        BARRIO: barrio,
+        DIRECCION: direccion,
+        EMAIL: email,
+        TELEFONO: telefono,
+      })
+      .then(() => {
+        alert("Cliente agregado correctamente");
+        getClients();
+        handleClose();
+      })
+      .catch(() => {
+        alert("Error al agregar cliente");
+      });
+  };
+
+  const deleteClient = (id) => {
+    if (window.confirm("¿Está seguro de eliminar este cliente?")) {
+      axios
+        .delete(`${url}/${id}`)
+        .then(() => {
+          alert("Cliente eliminado correctamente");
+          getClients();
+        })
+        .catch(() => {
+          alert("Error al eliminar cliente");
+        });
+    }
   };
 
   return (
-    <div className="m-4">
-      <div className="d-flex justify-content-center">
-        <p class="h1 fw-bold pb-2">Citas Agendadas/Finalizadas</p>
-      </div>
-      <Table striped bordered>
-        <thead>
-          <tr>
-            <th className="text-center">No.</th>
-            <th className="text-center">Mascota</th>
-            <th className="text-center">Especie</th>
-            <th className="text-center">Diagnóstico Principal</th>
-            <th className="text-center">Diagnóstico Secundario</th>
-            <th className="text-center">Fecha</th>
-            <th className="text-center">Hora de Inicio</th>
-            <th className="text-center">Hora de Fin</th>
-            <th className="text-center">Tipo de Consulta</th>
-            <th className="text-center">Tratamiento</th>
-            <th className="text-center">Observaciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {citas.map((d, i) => (
-            <tr key={i}>
-              <td>{d.ID_CITAS}</td>
-              <td>{d.MASCOTA}</td>
-              <td>{d.ESPECIE}</td>
-              <td>{d.CODIGO_DIAG_PRINCIPAL}</td>
-              <td>{d.CODIGO_DIAG_SECUNDARIO}</td>
-              <td>{formatDate(d.FECHA)}</td>
-              <td>{d.HORA_INICIO}</td>
-              <td>{d.HORA_FIN}</td>
-              <td>{d.NOMBRE_CONSULTA}</td>
-              <td>{d.TRATAMIENTO}</td>
-              <td>{d.OBSERVACIONES}</td>
+    <>
+      <div className="container-fluid m-1">
+        <p className="text-center h2 fw-bold mt-3">Nuestras mascotas</p>
+        <Table striped bordered className="mt-3">
+          <thead>
+            <tr className="text-center">
+              <th>No.</th>
+              <th>No. DOCUMENTO</th>
+              <th>NOMBRES</th>
+              <th>APELLIDOS</th>
+              <th>BARRIO</th>
+              <th>DIRECCION</th>
+              <th>EMAIL</th>
+              <th>TELÉFONO</th>
+              <th>ACCIÓN</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-      <NavLink to="/addcitas">
-        <Button className="btn-lg btn-primary">Nueva Cita</Button>
-      </NavLink>
-    </div>
-  );
-};
+          </thead>
+          <tbody>
+            {clientes.map((d, i) => (
+              <tr key={i} className="text-center">
+                <td>{d.ID_DUENOS}</td>
+                <td>{d.NUMERO_IDENTIFICACION}</td>
+                <td>{d.NOMBRES}</td>
+                <td>{d.APELLIDOS}</td>
+                <td>{d.BARRIO}</td>
+                <td>{d.DIRECCION}</td>
+                <td>{d.EMAIL}</td>
+                <td>{d.TELEFONO}</td>
+                <td>
+                  <Button className="btn-dark">
+                    <FaEdit />
+                  </Button>
+                  <Button
+                    className="btn-danger ms-2"
+                    onClick={() => deleteClient(d.ID_DUENOS)}
+                  >
+                    <FaTrash />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <Button className="btn-lg btn-dark" onClick={handleShow}>
+          Añadir Cliente
+        </Button>
+      </div>
 
-export default Citas;
+      <div>
+        <Modal show={showModal} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label className="mt-3">Tipo de documento</Form.Label>
+                <Form.Select
+                  value={tipoIdentificacion}
+                  onChange={(e) => setTipoIdenficacion(e.target.value)}
+                >
+                  <option>Seleccione una opción</option>
+                  {Array.isArray(tipoDocumento) &&
+                    tipoDocumento.map((d) => (
+                      <option
+                        key={d.ID_TIPO_IDENTIFICACION}
+                        value={d.ID_TIPO_IDENTIFICACION}
+                      >
+                        {d.DESCRIPCION}
+                      </option>
+                    ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>No. Documento</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={documento}
+                  onChange={(e) => setDocumento(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Nombres</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={nombres}
+                  onChange={(e) => setNombres(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Apellidos</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={apellidos}
+                  onChange={(e) => setApellidos(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Barrio</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={barrio}
+                  onChange={(e) => setBarrio(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Direccion</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Correo electrónico</Form.Label>
+                <Form.Control
+                  type="mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Telefono</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={telefono}
+                  onChange={(e) => setTelefono(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Volver
+            </Button>
+            <Button variant="primary" onClick={addClient}>
+              Guardar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </>
+  );
+}
+
+export default Clientes;

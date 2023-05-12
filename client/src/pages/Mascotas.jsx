@@ -61,6 +61,20 @@ function Mascotas() {
       });
   };
 
+  const deleteMascotas = (id) => {
+    if (window.confirm("¿Está seguro de eliminar esta mascota?")) {
+      axios
+        .delete(`${url}/${id}`)
+        .then(() => {
+          alert("Mascota eliminada correctamente");
+          refreshPets();
+        })
+        .catch(() => {
+          alert("Error al eliminar mascota");
+        });
+    }
+  };
+
   return (
     <>
       <div className="container-fluid m-1">
@@ -74,7 +88,7 @@ function Mascotas() {
               <th>FECHA DE NACIMIENTO</th>
               <th>SEXO</th>
               <th>RAZA</th>
-              <th>ACCION</th>
+              <th>ACCIÓN</th>
             </tr>
           </thead>
           <tbody>
@@ -87,10 +101,13 @@ function Mascotas() {
                 <td>{d.SEXO}</td>
                 <td>{d.RAZA}</td>
                 <td>
-                  <Button className="btn-lg btn-dark">
+                  <Button className="btn-dark">
                     <FaEdit />
                   </Button>
-                  <Button className="btn-lg btn-danger ms-2">
+                  <Button
+                    className="btn-danger ms-2"
+                    onClick={() => deleteMascotas(d.ID_MASCOTAS)}
+                  >
                     <FaTrash />
                   </Button>
                 </td>
