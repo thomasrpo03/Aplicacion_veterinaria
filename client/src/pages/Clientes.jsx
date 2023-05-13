@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
 
 const url = "http://localhost:3001/api/clients";
 const docTypyeUrl = "http://localhost:3001/api/tipodocumento";
@@ -288,8 +288,10 @@ const Clientes = () => {
           </div>
         </div>
       </div>
-      <div className="card mt-3 text-center">
-        <div className="card-header h2 fw-bold">Listado de Clientes</div>
+      <div className="card mt-3">
+        <div className="card-header h2 fw-bold text-center">
+          Listado de Clientes
+        </div>
         <div className="card-body">
           <Table striped bordered className="mt-3">
             <thead>
@@ -335,12 +337,12 @@ const Clientes = () => {
             </tbody>
           </Table>
         </div>
-        <div className="card-footer text-muted">
+        <div className="card-footer text-muted d-flex justify-content-end">
           <Button
             className="btn-lg btn-dark"
             onClick={() => window.scrollTo(0, 0)}
           >
-            <i className="fas fa-chevron-up"></i> Volver arriba
+             Volver arriba<FaArrowUp className="ms-2"/>
           </Button>
         </div>
       </div>
