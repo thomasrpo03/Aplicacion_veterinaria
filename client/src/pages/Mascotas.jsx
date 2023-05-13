@@ -16,6 +16,7 @@ const Mascotas = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [sexo, setSexo] = useState("");
   const [idRaza, setIdRaza] = useState("");
+  const [idDueno, setIdDueno] = useState("");
   const [id, setId] = useState(0);
 
   const [pets, setPets] = useState([]);
@@ -46,6 +47,7 @@ const Mascotas = () => {
         FECHA_NACIMIENTO: fechaNacimiento,
         SEXO: sexo,
         ID_RAZA: idRaza,
+        DUENOS_ID: idDueno,
       })
       .then(() => {
         alert("Mascota agregada correctamente");
@@ -80,6 +82,7 @@ const Mascotas = () => {
         FECHA_NACIMIENTO: fechaNacimiento,
         SEXO: sexo,
         ID_RAZA: idRaza,
+        DUENOS_ID: idDueno,
       })
       .then(() => {
         alert("Mascota actualizada correctamente");
@@ -101,6 +104,7 @@ const Mascotas = () => {
     setFechaNacimiento(val.FECHA_NACIMIENTO);
     setSexo(val.SEXO);
     setIdRaza(val.ID_RAZA);
+    setIdDueno(val.DUENOS_ID);
     setId(val.ID_MASCOTAS);
   };
 
@@ -110,6 +114,8 @@ const Mascotas = () => {
     setFechaNacimiento("");
     setSexo("");
     setIdRaza("");
+    setIdDueno("");
+
     setId("");
 
     setEditar(false);
@@ -219,6 +225,23 @@ const Mascotas = () => {
                     </option>
                   ))}
                 </Input>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="DUENOS_ID" sm={2} style={{ fontSize: "1.3rem" }}>
+                Documento del Dueño
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="input"
+                  name="DUENOS_ID"
+                  id="DUENOS_ID"
+                  onChange={(event) => {
+                    setIdDueno(event.target.value);
+                  }}
+                  value={idDueno}
+                  required
+                ></Input>
               </Col>
             </FormGroup>
           </Form>

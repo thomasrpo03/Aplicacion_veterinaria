@@ -5,6 +5,10 @@ import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
 
 const url = "http://localhost:3001/api/appointments";
 
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString();
+};
+
 const Citas = () => {
   const [idCita, setIdCita] = useState("");
   const [mascota, setMascota] = useState("");
@@ -67,7 +71,7 @@ const Citas = () => {
                   <td>{val.ESPECIE}</td>
                   <td>{val.CODIGO_DIAG_PRINCIPAL}</td>
                   <td>{val.CODIGO_DIAG_SECUNDARIO}</td>
-                  <td>{val.FECHA}</td>
+                  <td>{formatDate(val.FECHA)}</td>
                   <td>{val.HORA_INICIO}</td>
                   <td>{val.HORA_FIN}</td>
                   <td>{val.NOMBRE_CONSULTA}</td>

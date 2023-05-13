@@ -28,11 +28,20 @@ export const getPet = async (req, res) => {
 
 export const createPet = async (req, res) => {
   try {
-    const { NOMBRE, PESO, FECHA_NACIMIENTO, SEXO, ID_RAZA } = req.body;
+    const { NOMBRE, PESO, FECHA_NACIMIENTO, SEXO, ID_RAZA, DUENOS_ID } = req.body;
+    
+    // Consulta preparada con subconsulta que verifica si el número de identificación existe en la tabla 'duenos'
     const [rows] = await pool.query(
-      "INSERT INTO MASCOTAS (NOMBRE,PESO,FECHA_NACIMIENTO,SEXO,ID_RAZA ) VALUES (?, ?, ?, ?, ?)",
-      [NOMBRE, PESO, FECHA_NACIMIENTO, SEXO, ID_RAZA]
+      "INSERT INTO MASCOTAS (NOMBRE,PESO,FECHA_NACIMIENTO,SEXO,ID_RAZA,ID_DUENO ) SELECT ?,?,?,?,?,ID_DUENOS FROM duenos WHERE NUMERO_IDENTIFICACION = ? AND EXISTS (SELECT 1 FROM duenos WHERE NUMERO_IDENTIFICACION = ?);",
+      [NOMBRE, PESO, FECHA_NACIMIENTO, SEXO, ID_RAZA, DUENOS_ID, DUENOS_ID]
     );
+
+    // Verificar si se insertó un registro en la tabla 'MASCOTAS'
+    if (rows.affectedRows === 0) {
+      return res.status(404).json({ message: "El número de identificación proporcionado no se encuentra en la tabla 'duenos'" });
+    }
+
+    // Devolver los datos de la mascota creada
     res.send({
       id: rows.insertId,
       NOMBRE,
@@ -40,11 +49,15 @@ export const createPet = async (req, res) => {
       FECHA_NACIMIENTO,
       SEXO,
       ID_RAZA,
+      DUENOS_ID,
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Algo salió mal" });
   }
 };
+
+
 
 export const deletePet = async (req, res) => {
   try {

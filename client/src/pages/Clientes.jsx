@@ -63,6 +63,7 @@ const Clientes = () => {
         .delete(`${url}/${id}`)
         .then(() => {
           alert("Cliente eliminado correctamente");
+          getClients();
         })
         .catch(() => {
           alert("Error al eliminar cliente");

@@ -17,8 +17,8 @@ function App() {
         <div className="content w-100">
           <NavigationBar />
           <Routes>
-            <Route exact path="/" element={<Mascotas />} />
-            <Route exact path="/clientes" element={<Clientes />} />
+            <Route exact path="/" element={<Clientes />} />
+            <Route exact path="/mascotas" element={<Mascotas />} />
             <Route exact path="/citas" element={<Citas />} />
             <Route exact path="/facturacion" element={<Facturacion />} />
           </Routes>
