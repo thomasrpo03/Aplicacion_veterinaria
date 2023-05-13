@@ -3,7 +3,7 @@ import { pool } from "../db.js";
 export const getClients = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT ID_DUENOS, NUMERO_IDENTIFICACION, NOMBRES, APELLIDOS, BARRIO, DIRECCION, EMAIL, TELEFONO FROM duenos ORDER BY Id_duenos ASC;"
+      "SELECT ID_DUENOS, NUMERO_IDENTIFICACION, NOMBRES, APELLIDOS, DIRECCION, EMAIL, TELEFONO FROM duenos ORDER BY Id_duenos ASC;"
     );
     res.json(rows);
   } catch (error) {
@@ -33,19 +33,17 @@ export const createClient = async (req, res) => {
       NUMERO_IDENTIFICACION,
       NOMBRES,
       APELLIDOS,
-      BARRIO,
       DIRECCION,
       EMAIL,
       TELEFONO,
     } = req.body;
     const [rows] = await pool.query(
-      "INSERT INTO DUENOS (ID_TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, NOMBRES, APELLIDOS, DIRECCION, BARRIO, EMAIL, TELEFONO) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO DUENOS (ID_TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, NOMBRES, APELLIDOS, DIRECCION, EMAIL, TELEFONO) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
         ID_TIPO_IDENTIFICACION,
         NUMERO_IDENTIFICACION,
         NOMBRES,
         APELLIDOS,
-        BARRIO,
         DIRECCION,
         EMAIL,
         TELEFONO,
@@ -57,7 +55,6 @@ export const createClient = async (req, res) => {
       NUMERO_IDENTIFICACION,
       NOMBRES,
       APELLIDOS,
-      BARRIO,
       DIRECCION,
       EMAIL,
       TELEFONO,

@@ -117,16 +117,12 @@ const Mascotas = () => {
 
   return (
     <div className="content m-3">
-      <div className="card text-center">
-        <div className="card-header h2 fw-bold">Añadir Mascota</div>
+      <div className="card ">
+        <div className="card-header h2 fw-bold text-center">Añadir Mascota</div>
         <div className="card-body">
           <Form className="m-4">
             <FormGroup row>
-              <Label
-                for="NOMBRE"
-                sm={2}
-                style={{ fontSize: "1.3rem", textAlign: "center" }}
-              >
+              <Label for="NOMBRE" sm={2} style={{ fontSize: "1.3rem" }}>
                 Nombre
               </Label>
               <Col sm={10}>
@@ -143,11 +139,7 @@ const Mascotas = () => {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label
-                for="PESO"
-                sm={2}
-                style={{ fontSize: "1.3rem", textAlign: "center" }}
-              >
+              <Label for="PESO" sm={2} style={{ fontSize: "1.3rem" }}>
                 Peso (Kg)
               </Label>
               <Col sm={10}>
@@ -167,7 +159,7 @@ const Mascotas = () => {
               <Label
                 for="FECHA_NACIMIENTO"
                 sm={2}
-                style={{ fontSize: "1.3rem", textAlign: "center" }}
+                style={{ fontSize: "1.3rem" }}
               >
                 Fecha de Nacimiento
               </Label>
@@ -185,11 +177,7 @@ const Mascotas = () => {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label
-                for="sexo"
-                sm={2}
-                style={{ fontSize: "1.3rem", textAlign: "center" }}
-              >
+              <Label for="sexo" sm={2} style={{ fontSize: "1.3rem" }}>
                 Sexo
               </Label>
               <Col sm={10}>
@@ -210,11 +198,7 @@ const Mascotas = () => {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label
-                for="ID_RAZA"
-                sm={2}
-                style={{ fontSize: "1.3rem", textAlign: "center" }}
-              >
+              <Label for="ID_RAZA" sm={2} style={{ fontSize: "1.3rem" }}>
                 Raza
               </Label>
               <Col sm={10}>
@@ -266,7 +250,7 @@ const Mascotas = () => {
         <div className="card-body">
           <Table striped bordered className="mt-3">
             <thead>
-              <tr className="text-center">
+              <tr className="text-center h5">
                 <th>No.</th>
                 <th>NOMBRE</th>
                 <th>PESO</th>

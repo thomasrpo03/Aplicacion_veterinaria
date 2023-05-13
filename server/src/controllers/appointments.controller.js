@@ -70,3 +70,64 @@ export const createAppointment = async (req, res) => {
     return res.status(500).json({ message: "Algo salió mal" });
   }
 };
+
+export const deleteAppointment = async (req, res) => {
+  try {
+    const [result] = await pool.query("DELETE FROM citas WHERE ID_citas = ?", [
+      req.params.id,
+    ]);
+
+    if (result.affectedRows <= 0)
+      return res.status(404).json({ message: "Appointment not found" });
+
+    res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
+
+export const updateAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      FECHA,
+      HORA_INICIO,
+      HORA_FIN,
+      OBSERVACIONES,
+      ID_TIPO_CONSULTA,
+      ID_MASCOTAS,
+      ID_TRATAMIENTO,
+      ID_COD_DIAGNOSTICO_PRINCIPAL,
+      ID_COD_DIAGNOSTICO_SECUNDARIO,
+    } = req.body;
+
+    const [result] = await pool.query(
+      "UPDATE CITAS SET FECHA = IFNULL(?, FECHA), HORA_INICIO = IFNULL(?, HORA_INICIO), HORA_FIN = IFNULL(?, HORA_FIN),OBSERVACIONES = IFNULL(?, OBSERVACIONES), ID_TIPO_CONSULTA = IFNULL(?, ID_TIPO_CONSULTA),ID_MASCOTAS = IFNULL(?, ID_MASCOTAS),ID_TRATAMIENTO = IFNULL(?, ID_TRATAMIENTO),ID_COD_DIAGNOSTICO_PRINCIPAL = IFNULL(?, ID_COD_DIAGNOSTICO_PRINCIPAL),ID_COD_DIAGNOSTICO_SECUNDARIO = IFNULL(?, ID_COD_DIAGNOSTICO_SECUNDARIO) WHERE ID_CITAS = ?",
+      [
+        FECHA,
+        HORA_INICIO,
+        HORA_FIN,
+        OBSERVACIONES,
+        ID_TIPO_CONSULTA,
+        ID_MASCOTAS,
+        ID_TRATAMIENTO,
+        ID_COD_DIAGNOSTICO_PRINCIPAL,
+        ID_COD_DIAGNOSTICO_SECUNDARIO,
+        id,
+      ]
+    );
+
+    if (result.affectedRows <= 0)
+      return res.status(404).json({ message: "Appointment not found" });
+
+    const [rows] = await pool.query(
+      "SELECT * FROM citas WHERE ID_CITAS = ?",
+      [id]
+    );
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
