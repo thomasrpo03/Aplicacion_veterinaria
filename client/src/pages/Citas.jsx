@@ -104,7 +104,7 @@ const Citas = () => {
   const deleteCita = (val) => {
     Swal.fire({
       title: "<strong>Eliminar</strong>",
-      html: `<i>Desea eliminar al cliente <strong>${val.NOMBRES} ${val.APELLIDOS}?</i>`,
+      html: `<i>Desea eliminar la cita?</i>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#000000",
@@ -127,7 +127,7 @@ const Citas = () => {
           .catch(() => {
             Swal.fire({
               title: "Error!",
-              text: "Error al eliminar cliente",
+              text: "Error al eliminar cita",
               icon: "error",
               confirmButtonText: "Ok",
               confirmButtonColor: "#000000",
