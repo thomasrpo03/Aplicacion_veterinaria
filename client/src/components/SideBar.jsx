@@ -2,15 +2,15 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaRegCalendarAlt, FaFileInvoiceDollar } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
-import { SiDatadog } from "react-icons/si";
 import { BsFillPersonFill } from "react-icons/bs";
+import Gato from '../assets/Gato2.png'
 
 const SideBar = () => {
   return (
     <div className="sidebar bg-light sticky-top">
       <ul>
         <li style={{ display: "flex", justifyContent: "center" }}>
-          <SiDatadog className="" style={{ fontSize: "100px" }} />
+          <img src={Gato} alt="" />
         </li>
         <li>
           <NavLink to="/" exact className="text-dark rounded py-2 w-100 d-inline-block px-3" activeClassName="active">

@@ -131,3 +131,48 @@ export const updateAppointment = async (req, res) => {
     return res.status(500).json({ message: "Algo salió mal" });
   }
 };
+
+
+export const getQueryType = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT ID_TIPO_CONSULTA, NOMBRE_CONSULTA FROM tipo_consulta;"
+    );
+    res.json(rows);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
+
+export const getPetName = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT ID_MASCOTAS, NOMBRE FROM mascotas;"
+    );
+    res.json(rows);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
+
+export const getTreatment = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT ID_TRATAMIENTO, DESCRIPCION FROM tratamiento;"
+    );
+    res.json(rows);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};
+
+export const getDiagnosisCode = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT ID_COD_DIAGNOSTICO, CODIGO FROM cod_diagnostico;"
+    );
+    res.json(rows);
+  } catch (error) {
+    return res.status(500).json({ message: "Algo salió mal" });
+  }
+};

@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Thomas Restrepo Orrego",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

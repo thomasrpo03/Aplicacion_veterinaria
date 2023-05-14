@@ -150,7 +150,7 @@ const Mascotas = () => {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="input"
+                  type="number"
                   name="PESO"
                   id="PESO"
                   onChange={(event) => {
@@ -282,6 +282,7 @@ const Mascotas = () => {
                 <th>FECHA DE NACIMIENTO</th>
                 <th>SEXO</th>
                 <th>RAZA</th>
+                <th>DUEÑO</th>
                 <th>ACCIÓN</th>
               </tr>
             </thead>
@@ -294,6 +295,7 @@ const Mascotas = () => {
                   <td>{formatDate(val.FECHA_NACIMIENTO)}</td>
                   <td>{val.SEXO}</td>
                   <td>{val.RAZA}</td>
+                  <td>{val.NOMBRE_DUENO}</td>
                   <td>
                     <Button
                       className="btn-dark"
