@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import Gato2 from "../assets/Gato3.png";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [user, setUser] = useState("");
@@ -26,12 +27,24 @@ const Login = () => {
         password,
       });
       if (response.data.success) {
-        window.location.href = "http://localhost:5173/mascotas";
+        window.location.href = "http://localhost:5173/clientes";
       } else {
-        alert("Usuario o contraseña incorrectos");
+        Swal.fire({
+          title: "Error!",
+          text: response.data.error,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       }
     } catch (error) {
-      alert("Algo salió mal");
+      Swal.fire({
+        title: "Error!",
+        text: "Ocurrió un error al iniciar sesion",
+        icon: "error",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#000000",
+      });
     }
   };
 

@@ -16,25 +16,27 @@ const NavigationBar = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const handleLogout = () => {
+    window.location.href = "http://localhost:5173/";
+  };
+
   return (
     <div className="sticky-top">
-      <Navbar color="light" light expand="md" >
-        <NavbarBrand href="/" style={{ fontSize: '1.7rem', textAlign: 'center', fontWeight: 'bold' }}>Veterinaria Pelusa's Cat</NavbarBrand>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/" style={{ fontSize: "1.7rem", textAlign: "center", fontWeight: "bold" }}>
+          Veterinaria Pelusa's Cat
+        </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ms-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret style={{ fontSize: '1.3rem'}}>
+              <DropdownToggle nav caret style={{ fontSize: "1.3rem" }}>
                 Thomas Restrepo
               </DropdownToggle>
               <DropdownMenu end>
-                <DropdownItem>
-                  Opciones
-                </DropdownItem>
+                <DropdownItem>Opciones</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem>
-                  Cerrar Sesión
-                </DropdownItem>
+                <DropdownItem onClick={handleLogout}>Cerrar Sesión</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
