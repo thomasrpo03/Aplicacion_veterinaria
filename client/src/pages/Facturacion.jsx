@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Table,
@@ -57,7 +57,7 @@ const Facturacion = () => {
                   <td>{val.ID_FACTURACION}</td>
                   <td>{val.NOMBRE}</td>
                   <td>{val.NOMBRE_COMPLETO}</td>
-                <td>{val.DURACION} Hrs</td>
+                  <td>{val.DURACION} Hrs</td>
                   <td>
                     {val.VALOR_TOTAL.toLocaleString("es-CO", {
                       style: "currency",

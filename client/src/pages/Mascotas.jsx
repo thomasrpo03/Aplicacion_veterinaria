@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
 import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
@@ -291,7 +291,7 @@ const Mascotas = () => {
                 <tr key={i} className="text-center">
                   <td>{val.ID_MASCOTAS}</td>
                   <td>{val.NOMBRE}</td>
-                  <td>{val.PESO}</td>
+                  <td>{val.PESO} Kg</td>
                   <td>{formatDate(val.FECHA_NACIMIENTO)}</td>
                   <td>{val.SEXO}</td>
                   <td>{val.RAZA}</td>

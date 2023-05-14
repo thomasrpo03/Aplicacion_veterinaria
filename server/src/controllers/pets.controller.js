@@ -3,7 +3,7 @@ import { pool } from "../db.js";
 export const getPets = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT M.ID_MASCOTAS,M.NOMBRE,M.FECHA_NACIMIENTO,M.SEXO,R.DESCRIPCION AS RAZA, CONCAT(D.NOMBRES,' ',D.APELLIDOS) AS NOMBRE_DUENO FROM mascotas M INNER JOIN raza R ON R.ID_RAZA = M.ID_RAZA INNER JOIN duenos D ON D.ID_DUENOS = M.ID_DUENO ORDER BY ID_MASCOTAS;"
+      "SELECT M.ID_MASCOTAS,M.NOMBRE,M.PESO,M.FECHA_NACIMIENTO,M.SEXO,R.DESCRIPCION AS RAZA, CONCAT(D.NOMBRES,' ',D.APELLIDOS) AS NOMBRE_DUENO FROM mascotas M INNER JOIN raza R ON R.ID_RAZA = M.ID_RAZA INNER JOIN duenos D ON D.ID_DUENOS = M.ID_DUENO ORDER BY ID_MASCOTAS;"
     );
     res.json(rows);
   } catch (error) {
@@ -39,12 +39,10 @@ export const createPet = async (req, res) => {
 
     // Verificar si se insertó un registro en la tabla 'MASCOTAS'
     if (rows.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "El número de identificación proporcionado no se encuentra en la tabla 'duenos'",
-        });
+      return res.status(404).json({
+        message:
+          "El número de identificación proporcionado no se encuentra en la tabla 'duenos'",
+      });
     }
 
     // Devolver los datos de la mascota creada
