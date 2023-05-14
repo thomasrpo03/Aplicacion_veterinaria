@@ -3,6 +3,8 @@ import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
 import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
 
+import Swal from "sweetalert2";
+
 const url = "http://localhost:3001/api/pets";
 const raceOptionsUrl = "http://localhost:3001/api/raceoptions";
 
@@ -50,27 +52,60 @@ const Mascotas = () => {
         DUENOS_ID: idDueno,
       })
       .then(() => {
-        alert("Mascota agregada correctamente");
         getPets();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Registro exitoso!</strong>",
+          html: `<i><strong>${nombre} </strong>ha sido agregad@ con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al agregar mascota");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al agregar mascota",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
-  const deleteMascotas = (id) => {
-    if (window.confirm("¿Está seguro de eliminar esta mascota?")) {
-      axios
-        .delete(`${url}/${id}`)
-        .then(() => {
-          alert("Mascota eliminada correctamente");
-          getPets();
-        })
-        .catch(() => {
-          alert("Error al eliminar mascota");
-        });
-    }
+  const deleteMascotas = (val) => {
+    Swal.fire({
+      title: "<strong>Eliminar</strong>",
+      html: `<i>Desea eliminar la mascota <strong>${val.NOMBRE}?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${url}/${val.ID_MASCOTAS}`)
+          .then(() => {
+            getPets();
+            Swal.fire({
+              title: "Eliminado!",
+              html: `<i><strong>${val.NOMBRE}</strong> ha sido eliminad@ con exito</i>`,
+              icon: "success",
+              confirmButtonColor: "#000000",
+              timer: 4000,
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "Error al eliminar mascota",
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#000000",
+            });
+          });
+      }
+    });
   };
 
   const updateMascota = () => {
@@ -85,12 +120,23 @@ const Mascotas = () => {
         DUENOS_ID: idDueno,
       })
       .then(() => {
-        alert("Mascota actualizada correctamente");
         getPets();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Actualización exitosa!</strong>",
+          html: `<i><strong>${nombre} </strong>ha sido actualizad@ con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al actualizar mascota");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al actualizar mascota",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
@@ -307,7 +353,7 @@ const Mascotas = () => {
                     </Button>
                     <Button
                       className="btn-danger ms-2"
-                      onClick={() => deleteMascotas(val.ID_MASCOTAS)}
+                      onClick={() => deleteMascotas(val)}
                     >
                       <FaTrash />
                     </Button>

@@ -4,6 +4,7 @@ import indexRoutes from "./routes/index.routes.js";
 import clientRoutes from "./routes/clients.routes.js";
 import appointmentsRoutes from "./routes/appointments.routes.js";
 import billsRoutes from "./routes/bills.routes.js";
+import usersRoutes from "./routes/users.routes.js";
 import cors from "cors";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use("/api", indexRoutes);
 app.use("/api", clientRoutes);
 app.use("/api", appointmentsRoutes);
 app.use("/api", billsRoutes);
+app.use("/api", usersRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({

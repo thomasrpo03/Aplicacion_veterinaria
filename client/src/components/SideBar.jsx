@@ -13,7 +13,7 @@ const SideBar = () => {
           <img src={Gato} alt="" />
         </li>
         <li>
-          <NavLink to="/" exact className="text-dark rounded py-2 w-100 d-inline-block px-3" activeClassName="active">
+          <NavLink to="/clientes" exact className="text-dark rounded py-2 w-100 d-inline-block px-3" activeClassName="active">
           <BsFillPersonFill /> Clientes
           </NavLink>
         </li>

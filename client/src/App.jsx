@@ -8,22 +8,33 @@ import Mascotas from "../src/pages/Mascotas";
 import Clientes from "../src/pages/Clientes";
 import Citas from "../src/pages/Citas";
 import Facturacion from "../src/pages/Facturacion";
+import Login from "../src/pages/Login";
 
 function App() {
+  const isLoginPage = window.location.pathname === "/";
+
+  const MainContent = () => (
+    <div className="flex">
+      <SideBar />
+      <div className="content w-100">
+        <NavigationBar />
+        <Routes>
+          <Route exact path="/clientes" element={<Clientes />} />
+          <Route exact path="/mascotas" element={<Mascotas />} />
+          <Route exact path="/citas" element={<Citas />} />
+          <Route exact path="/facturacion" element={<Facturacion />} />
+        </Routes>
+      </div>
+    </div>
+  );
+
   return (
     <Router>
-      <div className="flex">
-        <SideBar />
-        <div className="content w-100">
-          <NavigationBar />
-          <Routes>
-            <Route exact path="/" element={<Clientes />} />
-            <Route exact path="/mascotas" element={<Mascotas />} />
-            <Route exact path="/citas" element={<Citas />} />
-            <Route exact path="/facturacion" element={<Facturacion />} />
-          </Routes>
-        </div>
-      </div>
+      {isLoginPage ? (
+        <Login />
+      ) : (
+        <MainContent />
+      )}
     </Router>
   );
 }

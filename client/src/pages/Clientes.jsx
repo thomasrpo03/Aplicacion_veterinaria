@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
 import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
+
+import Swal from "sweetalert2";
 
 const url = "http://localhost:3001/api/clients";
 const docTypyeUrl = "http://localhost:3001/api/tipodocumento";
@@ -48,28 +50,62 @@ const Clientes = () => {
         TELEFONO: telefono,
       })
       .then(() => {
-        alert("Cliente agregado con exito");
         getClients();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Registro exitoso!</strong>",
+          html: `<i><strong>${nombres} ${apellidos} </strong>ha sido agregad@ con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al agregar cliente");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al agregar cliente",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
-  const deleteCliente = (id) => {
-    if (window.confirm("¿Está seguro de eliminar este cliente?")) {
-      axios
-        .delete(`${url}/${id}`)
-        .then(() => {
-          alert("Cliente eliminado correctamente");
-          getClients();
-        })
-        .catch(() => {
-          alert("Error al eliminar cliente");
-        });
-    }
+  const deleteCliente = (val) => {
+    Swal.fire({
+      title: "<strong>Eliminar</strong>",
+      html: `<i>Desea eliminar al cliente <strong>${val.NOMBRES} ${val.APELLIDOS}?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${url}/${val.ID_DUENOS}`)
+          .then(() => {
+            getClients();
+            Swal.fire({
+              title: "Eliminado!",
+              html: `<i><strong>${val.NOMBRES} ${val.APELLIDOS}</strong> ha sido eliminad@ con exito</i>`,
+              icon: "success",
+              confirmButtonColor: "#000000",
+              timer: 4000,
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "Error al eliminar cliente",
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#000000",
+            });
+          });
+      }
+    });
   };
+  
 
   const updateCliente = () => {
     axios
@@ -84,12 +120,23 @@ const Clientes = () => {
         TELEFONO: telefono,
       })
       .then(() => {
-        alert("Cliente actualizado correctamente");
         getClients();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Actualización exitosa!</strong>",
+          html: `<i><strong>${nombres} ${apellidos} </strong>ha sido actualizad@ con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al actualizar cliente");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al actualizar cliente",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
@@ -328,7 +375,7 @@ const Clientes = () => {
                     </Button>
                     <Button
                       className="btn-danger ms-2"
-                      onClick={() => deleteCliente(val.ID_DUENOS)}
+                      onClick={() => deleteCliente(val)}
                     >
                       <FaTrash />
                     </Button>
@@ -343,7 +390,8 @@ const Clientes = () => {
             className="btn-lg btn-dark"
             onClick={() => window.scrollTo(0, 0)}
           >
-             Volver arriba<FaArrowUp className="ms-2"/>
+            Volver arriba
+            <FaArrowUp className="ms-2" />
           </Button>
         </div>
       </div>

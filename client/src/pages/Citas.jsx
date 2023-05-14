@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Label, Col, Input, Button, Table } from "reactstrap";
 import axios from "axios";
 import { FaEdit, FaTrash, FaArrowUp } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const url = "http://localhost:3001/api/appointments";
 const urlQueryType = "http://localhost:3001/api/querytype";
@@ -80,27 +81,60 @@ const Citas = () => {
         ID_COD_DIAGNOSTICO_SECUNDARIO: idDiagSec,
       })
       .then(() => {
-        alert("Cita registrada con exito");
         getCitas();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Registro exitoso!</strong>",
+          html: `<i>La cita ha sido agregada con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al registrar la cita");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al registrar cita",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
-  const deleteCita = (id) => {
-    if (window.confirm("¿Seguro que desea eliminar esta cita?")) {
-      axios
-        .delete(`${url}/${id}`)
-        .then(() => {
-          alert("Cita eliminada con exito");
-          getCitas();
-        })
-        .catch(() => {
-          alert("Error al eliminar la cita");
-        });
-    }
+  const deleteCita = (val) => {
+    Swal.fire({
+      title: "<strong>Eliminar</strong>",
+      html: `<i>Desea eliminar al cliente <strong>${val.NOMBRES} ${val.APELLIDOS}?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${url}/${val.ID_CITAS}`)
+          .then(() => {
+            getCitas();
+            Swal.fire({
+              title: "Eliminada!",
+              html: `<i>La cita ha sido eliminada con exito</i>`,
+              icon: "success",
+              confirmButtonColor: "#000000",
+              timer: 4000,
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "Error al eliminar cliente",
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#000000",
+            });
+          });
+      }
+    });
   };
 
   const updateCita = () => {
@@ -118,12 +152,23 @@ const Citas = () => {
         ID_COD_DIAGNOSTICO_SECUNDARIO: idDiagSec,
       })
       .then(() => {
-        alert("Cita actualizada con exito");
         getCitas();
         cleanInputs();
+        Swal.fire({
+          title: "<strong>Actualización exitosa!</strong>",
+          html: `<i>La cita ha sido actualizada con exito</i>`,
+          icon: "success",
+          timer: 4000,
+        });
       })
       .catch(() => {
-        alert("Error al actualizar la cita");
+        Swal.fire({
+          title: "Error!",
+          text: "Error al actualizar cita",
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#000000",
+        });
       });
   };
 
@@ -445,7 +490,7 @@ const Citas = () => {
                     <Button
                       className="btn-danger ms-2"
                       onClick={() => {
-                        deleteCita(val.ID_CITAS);
+                        deleteCita(val);
                       }}
                     >
                       <FaTrash />
